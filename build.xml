@@ -1,0 +1,36 @@
+<project name="WaesAssignment" default="deploy" basedir=".">
+
+	<description>
+		WaesAssignment
+	</description>
+	
+	<property file="build.properties" />
+
+	<!-- ====================================
+     Clean the project using Maven commands
+    ==================================== -->
+	<target name="clean" description="Clean the project using Maven commands...">
+	    <exec dir="." executable="cmd">
+	        <arg line="/c mvn clean" />
+	    </exec>
+	</target>
+
+	<!-- ====================================
+     Build the war file using Maven commands
+    ==================================== -->
+	<target name="build" description="Builds the war file using Maven commands...">
+	    <exec dir="." executable="cmd">
+	        <arg line="/c mvn clean install" />
+	    </exec>
+	</target>
+
+	<!-- ====================================
+     Deplpy the war file on the application server (using build.properties)
+    ==================================== -->
+	<target name="deploy" depends="build">
+		<echo message="Clean-up/Copy war file to application server folder..." />
+		<delete dir="${tomcat.home}/webapps/WaesAssignment" />
+		<delete file="${tomcat.home}/webapps/WaesAssignment.war" />
+		<copy file="target/WaesAssignment.war" todir="${tomcat.home}/webapps" />
+	</target>
+</project>
